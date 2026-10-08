@@ -3,58 +3,273 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mon outil de devis</title>
+  <title>Créer un devis</title>
+
   <style>
-    body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; color: #222; }
-    h1 { color: #2457d6; }
-    input { padding: 10px; margin: 5px 0; border: 1px solid #ccc; border-radius: 6px; }
-    .ligne { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 8px; margin: 10px 0; }
-    button { padding: 10px 14px; border: 0; border-radius: 6px; cursor: pointer; }
-    .ajouter { background: #2457d6; color: white; }
-    .supprimer { background: #eee; }
-    .total { text-align: right; font-size: 1.2em; margin-top: 20px; }
-    @media (max-width: 600px) { .ligne { grid-template-columns: 1fr 1fr; } }
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      font-family: Arial, sans-serif;
+      color: #172033;
+      background: #f4f7fb;
+    }
+
+    .conteneur {
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .entete {
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      color: #4563eb;
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      margin: 10px 0 6px;
+      font-size: 32px;
+    }
+
+    .sous-titre {
+      margin: 0;
+      color: #687386;
+    }
+
+    .carte {
+      padding: 28px;
+      background: white;
+      border: 1px solid #e5eaf2;
+      border-radius: 16px;
+      box-shadow: 0 12px 35px rgba(30, 50, 90, 0.08);
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 18px;
+    }
+
+    .champ-client {
+      margin-bottom: 28px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      min-width: 0;
+      padding: 12px 14px;
+      color: #172033;
+      background: white;
+      border: 1px solid #d8deea;
+      border-radius: 9px;
+      font-size: 14px;
+    }
+
+    input:focus {
+      outline: 3px solid #e3e8ff;
+      border-color: #4563eb;
+    }
+
+    .ligne {
+      display: grid;
+      grid-template-columns: 2fr 0.8fr 1.2fr auto;
+      gap: 10px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+
+    button {
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      filter: brightness(0.96);
+    }
+
+    .ajouter {
+      color: white;
+      background: #4563eb;
+    }
+
+    .supprimer {
+      padding: 11px;
+      color: #b42318;
+      background: #fff1f0;
+    }
+
+    .bas {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      margin-top: 28px;
+    }
+
+    .imprimer {
+      color: white;
+      background: #172033;
+    }
+
+    .total {
+      min-width: 240px;
+      padding: 18px;
+      background: #f7f8fc;
+      border-radius: 12px;
+    }
+
+    .total p {
+      display: flex;
+      justify-content: space-between;
+      margin: 0 0 12px;
+      color: #687386;
+      font-size: 14px;
+    }
+
+    .total strong {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid #dfe4ee;
+      font-size: 17px;
+    }
+
+    @media (max-width: 650px) {
+      body {
+        padding: 24px 14px;
+      }
+
+      .carte {
+        padding: 20px 16px;
+      }
+
+      h1 {
+        font-size: 27px;
+      }
+
+      .ligne {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .ligne input:first-child {
+        grid-column: 1 / -1;
+      }
+
+      .bas {
+        flex-direction: column;
+      }
+
+      .total {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: white;
+      }
+
+      .carte {
+        border: 0;
+        box-shadow: none;
+      }
+
+      .ajouter,
+      .supprimer,
+      .imprimer {
+        display: none;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <h1>Créer un devis</h1>
-  <label>Nom du client<br><input id="client" placeholder="Nom du client"></label>
+  <main class="conteneur">
+    <header class="entete">
+      <div class="logo">Mon outil de devis</div>
+      <h1>Créer un devis</h1>
+      <p class="sous-titre">Préparez facilement une estimation pour votre client.</p>
+    </header>
 
-  <h2>Prestations</h2>
-  <div id="lignes"></div>
-  <button class="ajouter" onclick="ajouterLigne()">+ Ajouter une prestation</button>
+    <section class="carte">
+      <div class="champ-client">
+        <label for="client">Nom du client</label>
+        <input id="client" placeholder="Ex. Sophie Dupont">
+      </div>
 
-  <div class="total">
-    <p>Total HT : <span id="ht">0,00</span> €</p>
-    <p>TVA (21 %) : <span id="tva">0,00</span> €</p>
-    <strong>Total TVAC : <span id="ttc">0,00</span> €</strong>
-  </div>
+      <h2>Prestations</h2>
+      <div id="lignes"></div>
 
-  <button class="ajouter" onclick="window.print()">Imprimer / enregistrer en PDF</button>
+      <button class="ajouter" onclick="ajouterLigne()">
+        + Ajouter une prestation
+      </button>
+
+      <div class="bas">
+        <button class="imprimer" onclick="window.print()">
+          Imprimer / enregistrer en PDF
+        </button>
+
+        <div class="total">
+          <p><span>Total HT</span><span><span id="ht">0,00</span> €</span></p>
+          <p><span>TVA (21 %)</span><span><span id="tva">0,00</span> €</span></p>
+          <strong><span>Total TVAC</span><span><span id="ttc">0,00</span> €</span></strong>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <script>
     function ajouterLigne() {
       const ligne = document.createElement("div");
       ligne.className = "ligne";
+
       ligne.innerHTML = `
-        <input placeholder="Description">
-        <input type="number" min="0" placeholder="Quantité" value="1" oninput="calculer()">
-        <input type="number" min="0" step="0.01" placeholder="Prix unitaire HT (€)" oninput="calculer()">
+        <input aria-label="Description" placeholder="Description de la prestation">
+        <input aria-label="Quantité" type="number" min="0" placeholder="Quantité" value="1" oninput="calculer()">
+        <input aria-label="Prix unitaire hors taxe" type="number" min="0" step="0.01" placeholder="Prix unitaire HT (€)" oninput="calculer()">
         <button class="supprimer" onclick="this.parentElement.remove(); calculer()">Supprimer</button>
       `;
+
       document.getElementById("lignes").appendChild(ligne);
     }
 
     function calculer() {
       let total = 0;
+
       document.querySelectorAll(".ligne").forEach(ligne => {
         const quantite = Number(ligne.children[1].value) || 0;
         const prix = Number(ligne.children[2].value) || 0;
         total += quantite * prix;
       });
-      document.getElementById("ht").textContent = total.toFixed(2).replace(".", ",");
-      document.getElementById("tva").textContent = (total * 0.21).toFixed(2).replace(".", ",");
-      document.getElementById("ttc").textContent = (total * 1.21).toFixed(2).replace(".", ",");
+
+      document.getElementById("ht").textContent =
+        total.toFixed(2).replace(".", ",");
+
+      document.getElementById("tva").textContent =
+        (total * 0.21).toFixed(2).replace(".", ",");
+
+      document.getElementById("ttc").textContent =
+        (total * 1.21).toFixed(2).replace(".", ",");
     }
 
     ajouterLigne();
